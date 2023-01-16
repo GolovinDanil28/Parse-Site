@@ -17,6 +17,8 @@ namespace CatalogSupportLibrary.Requests
         public string Respons { get; set; }
         public string Accept { get; set; }
         public string Host { get; set; }
+        public string Refer { get; set; }
+        public string UserAgent { get; set; }
         public WebProxy Proxy { get; set; }
 
         public GetRequest( string adress)
@@ -52,6 +54,8 @@ namespace CatalogSupportLibrary.Requests
             _request.Proxy = Proxy;
             _request.Accept = Accept;
             _request.Host = Host;
+            _request.Referer = Refer;
+            _request.UserAgent = UserAgent;
 
 
             foreach(var pair in Headers)

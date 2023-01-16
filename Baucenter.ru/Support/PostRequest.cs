@@ -21,6 +21,8 @@ namespace CatalogSupportLibrary.Requests
         public string ContentType { get; set; }
         public string Data { get; set; }
         public WebProxy Proxy { get; set; }
+        public string Refer { get; set; }
+        public string UserAgent { get; set; }
 
         public PostRequest( string adress)
         {
@@ -56,6 +58,8 @@ namespace CatalogSupportLibrary.Requests
             _request.Accept = Accept;
             _request.Host = Host;
             _request.ContentType = ContentType;
+            _request.Referer = Refer;
+            _request.UserAgent = UserAgent;
 
             byte[] sentData = Encoding.UTF8.GetBytes(Data);
             _request.ContentLength = sentData.Length;
