@@ -4,10 +4,11 @@ using System.IO;
 using System.Net;
 using System.Net.Cache;
 using System.Configuration;
+using System.Text;
 
 namespace CatalogSupportLibrary.Requests
 {
-    public class GetRequest
+    public class PostRequest
     {
         HttpWebRequest _request;
         string _adress;
@@ -17,9 +18,11 @@ namespace CatalogSupportLibrary.Requests
         public string Respons { get; set; }
         public string Accept { get; set; }
         public string Host { get; set; }
+        public string ContentType { get; set; }
+        public string Data { get; set; }
         public WebProxy Proxy { get; set; }
 
-        public GetRequest( string adress)
+        public PostRequest( string adress)
         {
             _adress = adress;
             Headers = new Dictionary<string, string>();
@@ -28,7 +31,7 @@ namespace CatalogSupportLibrary.Requests
         public void Run()
         {
             _request =(HttpWebRequest)WebRequest.Create(_adress);
-            _request.Method = "GET";
+            _request.Method = "Post";
 
             try
             {
@@ -47,12 +50,18 @@ namespace CatalogSupportLibrary.Requests
         public void Run(CookieContainer cookieContainer)
         {
             _request = (HttpWebRequest)WebRequest.Create(_adress);
-            _request.Method = "GET";
+            _request.Method = "Post";
             _request.CookieContainer = cookieContainer;
             _request.Proxy = Proxy;
             _request.Accept = Accept;
             _request.Host = Host;
+            _request.ContentType = ContentType;
 
+            byte[] sentData = Encoding.UTF8.GetBytes(Data);
+            _request.ContentLength = sentData.Length;
+            Stream sendStream = _request.GetRequestStream();
+            sendStream.Write(sentData, 0, sentData.Length);
+            sendStream.Close();
 
             foreach(var pair in Headers)
             {
